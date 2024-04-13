@@ -1,6 +1,14 @@
-import React from 'react'
+import React, { useState } from 'react'  
+import axiox from 'axios'
+
 
 function RegisterComponent() {
+const [register, setregister]=useState({
+  name:'',
+  email:'',
+
+})
+
   return (
     <div className="flex flex-col bg-gray-800 p-4 rounded-lg">
       <h1 className="font-semibold text-2xl my-4 text-center">Register</h1>
@@ -20,6 +28,10 @@ function RegisterComponent() {
           placeholder="Password"
           className="input input-bordered w-full"
         />
+        <select>
+          <option>Donator</option>
+          <option>NGO</option>
+        </select>
         <button className="btn w-full">Register</button>
       </div>
       <div className="divider">OR</div>
