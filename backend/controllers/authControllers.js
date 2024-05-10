@@ -4,8 +4,10 @@ import JWT from "jsonwebtoken";
 
 // registration Controller
 export const registerController = async (req, res) => {
+
   try {
-    const { name, email, password, phone, answer, address } = req.body;
+    const { name, email, password, phone, address } = req.body;
+    console.log(name,email)
     // checking required fields not empty
     if (!name) {
       return res.status(201).send({
@@ -37,12 +39,6 @@ export const registerController = async (req, res) => {
         message: "Address is required",
       });
     }
-    if (!answer) {
-      return res.status(201).send({
-        success: false,
-        message: "Answer is required",
-      });
-    }
     // check existing user
     const existingUser = await userModel.findOne({ email });
     if (existingUser) {
@@ -59,7 +55,6 @@ export const registerController = async (req, res) => {
       email,
       phone,
       address,
-      answer,
       password: hashPassword,
     }).save();
     res.status(200).send({
@@ -68,6 +63,7 @@ export const registerController = async (req, res) => {
       user,
     });
   } catch (error) {
+    console.log(error)
     res.status(205).send({
       success: false,
       message: "error in registration",
@@ -107,6 +103,13 @@ export const loginController = async (req, res) => {
     const token = JWT.sign({ _id: user._id }, process.env.JWT_SECRET, {
       expiresIn: "7d",
     });
+    // res.cookies.set('token',token)
+    res.cookie('token', token, { 
+      maxAge: 7 * 24 * 60 * 60 * 1000, // Expires in 7 days
+      httpOnly: true, // Cookie only accessible by the web server
+      secure: true, // Cookie sent only over HTTPS
+    });
+    console.log(token+"--------------------------------------------------")
     res.status(200).send({
       success: true,
       message: "Login Successfully",
@@ -114,7 +117,6 @@ export const loginController = async (req, res) => {
         name: user.name,
         email: user.email,
         phone: user.phone,
-        address: user.address,
         role: user.role,
       },
       token,
