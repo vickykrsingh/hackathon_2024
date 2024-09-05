@@ -1,10 +1,10 @@
 import express from 'express';
 import { uploadFood, getFood } from '../controllers/foodControllers.js';
-import { upload } from '../Config/multer-config.js';
+import { requireSignIn } from '../middlewares/authMiddleware.js';
 
 const router = express.Router();
 
-router.post('/create', upload.single('foodImage'), uploadFood);
-router.post('/fetch', getFood);
+router.post('/create',requireSignIn, uploadFood);
+router.post('/fetch',requireSignIn, getFood);
 
 export default router;

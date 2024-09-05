@@ -13,6 +13,11 @@ const foodSchema = new mongoose.Schema({
         type:String,
         required:true
     },
+    user:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"user",
+        required:true
+    }
 })
 
 const foodModel = mongoose.model('food',foodSchema)
