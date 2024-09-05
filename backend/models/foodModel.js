@@ -9,16 +9,6 @@ const foodSchema = new mongoose.Schema({
         type:String,
         required:true
     },
-    foodImage:{
-        public_id:{
-            type:String,
-            required:true
-        },
-        secure_url:{
-            type:String,
-            required:true
-        }
-    },
     quantity:{
         type:String,
         required:true

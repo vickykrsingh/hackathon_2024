@@ -1,3 +1,7 @@
-import multer from "multer"
-const storage = multer.memoryStorage()  // store image in memory
-export const upload = multer({storage:storage})
+import multer from 'multer';
+
+// Use memoryStorage to store file in memory
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
+
+export { upload };
