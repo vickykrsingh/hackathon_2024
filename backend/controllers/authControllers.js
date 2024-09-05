@@ -4,9 +4,8 @@ import JWT from "jsonwebtoken";
 
 // registration Controller
 export const registerController = async (req, res) => {
-
   try {
-    const { name, email, password, phone, address } = req.body;
+    const { name, email, password, address } = req.body;
     console.log(name,email)
     // checking required fields not empty
     if (!name) {
@@ -25,12 +24,6 @@ export const registerController = async (req, res) => {
       return res.status(201).send({
         success: false,
         message: "Password is required",
-      });
-    }
-    if (!phone) {
-      return res.status(201).send({
-        success: false,
-        message: "Phone is required",
       });
     }
     if (!address) {
@@ -53,7 +46,6 @@ export const registerController = async (req, res) => {
     const user = await new userModel({
       name,
       email,
-      phone,
       address,
       password: hashPassword,
     }).save();
@@ -107,7 +99,7 @@ export const loginController = async (req, res) => {
     res.cookie('token', token, { 
       maxAge: 7 * 24 * 60 * 60 * 1000, // Expires in 7 days
       httpOnly: true, // Cookie only accessible by the web server
-      secure: true, // Cookie sent only over HTTPS
+      // secure: true, // Cookie sent only over HTTPS
     });
     console.log(token+"--------------------------------------------------")
     res.status(200).send({
@@ -116,7 +108,6 @@ export const loginController = async (req, res) => {
       user: {
         name: user.name,
         email: user.email,
-        phone: user.phone,
         role: user.role,
       },
       token,
@@ -178,7 +169,7 @@ export const forgetPasswordController = async (req, res) => {
 
 export const updateProfile = async (req, res) => {
   try {
-    const { name, password, phone, address, email } = req.body;
+    const { name, password, address, email } = req.body;
     const user = await userModel.findById(req.user._id);
     // password
     if (password && password.length < 6) {
@@ -192,7 +183,6 @@ export const updateProfile = async (req, res) => {
       req.user._id,
       {
         name: name || user.name,
-        phone: phone || user.phone,
         password: hashedUpdatePassword || user.password,
         address: address || user.address,
       },
