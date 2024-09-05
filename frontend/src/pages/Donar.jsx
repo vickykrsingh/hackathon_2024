@@ -1,7 +1,6 @@
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
-
 const Donor = () => {
     const [data, setData] = useState({
         description: "",
@@ -17,16 +16,10 @@ const Donor = () => {
             [e.target.name]:e.target.value
         })
     };
-    
-
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             const response = await axios.post('http://localhost:8000/api/v1/food/create', data, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                },
                 withCredentials: true
             });
             if(response.data.success){
@@ -41,7 +34,6 @@ const Donor = () => {
             toast.error("something went wrong")
         }
     };
-
     // Fetch past donations when the component loads
     useEffect(() => {
         const fetchDonations = async () => {
@@ -118,7 +110,7 @@ const Donor = () => {
                 <div className="container mx-auto px-6">
                     <h2 className="text-2xl font-bold mb-6">Your Past Donations</h2>
                     <div className="bg-gray-100 p-6 rounded-lg shadow-lg">
-                        {donations.length === 0 ? (
+                        {donations?.length === 0 || !donations ? (
                             <p>No donations yet. Start donating today!</p>
                         ) : (
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
